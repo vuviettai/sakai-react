@@ -1,0 +1,51 @@
+import { Contract } from '@hyperledger/fabric-gateway';
+import * as grpc from '@grpc/grpc-js';
+export type FabricConfig = {
+    org: string;
+    channelName: string;
+    chaincodeSecurity: string;
+    chaincodeDemo: string;
+    mspId: string;
+    cryptoPath: string;
+    keyDirectoryPath: string;
+    certDirectoryPath: string;
+    tlsCertPath: string;
+    peerEndpoint: string;
+    peerHostAlias: string;
+};
+
+export interface ContractClient {
+    grpcClient: grpc.Client;
+    gateway: Gateway
+}
+export interface Attribute {
+    key: string;
+    value: string;
+}
+export interface ObjectAttribute {
+    namespace: string;
+    objectName: string;
+    action: string;
+    attributes: Attribute[];
+}
+export interface IdentityAttribute {
+    id: string;
+    attributes: Attribute[];
+}
+export interface PubKey {
+    org: string;
+    pubkey: string;
+}
+export interface Asset {
+    id: string;
+    title: string;
+    name: string;
+    size: number;
+    value: number;
+    destinationOrg: string; //Organization name
+    description: string;
+    attachment: string; //Base64 encoded string
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+}
