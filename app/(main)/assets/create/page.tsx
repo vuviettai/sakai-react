@@ -38,7 +38,10 @@ const FormCreateAsset = () => {
         value: 0,
         destinationOrg: '',
         description: '',
-        attachment: ''
+        attachment: '',
+        status: '',
+        createdAt: '',
+        updatedAt: ''
     });
     const setAttachment = async (file: File) => {
         const buffer = await file.arrayBuffer();
@@ -77,7 +80,10 @@ const FormCreateAsset = () => {
                 value: 0,
                 destinationOrg: '',
                 description: '',
-                attachment: ''
+                attachment: '',
+                status: '',
+                createdAt: '',
+                updatedAt: ''
             });
 
             // You might want to add success notification here
@@ -97,13 +103,15 @@ const FormCreateAsset = () => {
                     <h5>Create new asset</h5>
                     <div className="field">
                         <label htmlFor="destinationOrg" className="col-12 mb-2 md:col-2 md:mb-0">Destination Organization</label>
-                        <Dropdown
-                            id="destinationOrg"
-                            value={formData.destinationOrg}
-                            onChange={(e) => setFormData(prev => ({ ...prev, destinationOrg: e.target.value }))}
-                            options={dropdownItems}
-                            optionLabel="name"
-                        />
+                        <div className="col-12 md:col-10">
+                            <Dropdown
+                                id="destinationOrg"
+                                value={formData.destinationOrg}
+                                onChange={(e) => setFormData(prev => ({ ...prev, destinationOrg: e.target.value }))}
+                                options={dropdownItems}
+                                optionLabel="name"
+                            />
+                        </div>
                     </div>
                     <div className="field">
                         <label htmlFor="id" className="col-12 mb-2 md:col-2 md:mb-0">ID</label>

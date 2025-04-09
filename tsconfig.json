@@ -31,7 +31,7 @@
         "./types/*"
       ],
       "@services/*": [
-        "./services/*"
+        "../fabric-rest/src/services/*"
       ],
       "@/*": [
         "./*"

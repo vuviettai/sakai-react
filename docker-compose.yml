@@ -1,15 +1,16 @@
 version: '3.7'
 
 services:
-  sakai-react:
+  fabric-client:
     build:
       context: .
       dockerfile: Dockerfile
+    image: fabric-client
     ports:
       - "3000:3000"
     volumes:
       # Mount the fabric-samples config directory
-      - ./fabric-samples/config:/app/config
+      - ../fabric-samples/test-network/organizations:/opt/organizations
       # You can add more volume mounts as needed
     environment:
       - NODE_ENV=development

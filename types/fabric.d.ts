@@ -2,6 +2,7 @@ import { Contract } from '@hyperledger/fabric-gateway';
 import * as grpc from '@grpc/grpc-js';
 export type FabricConfig = {
     org: string;
+    username: string;
     channelName: string;
     chaincodeSecurity: string;
     chaincodeDemo: string;

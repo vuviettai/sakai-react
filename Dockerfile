@@ -1,35 +1,49 @@
-# Build stage
-FROM oven/bun:1 AS builder
+# syntax = docker/dockerfile:1
+
+FROM node:22-slim AS base
+
+ARG PORT=3000
+
+ENV NEXT_TELEMETRY_DISABLED=1
 
 WORKDIR /app
 
-# Copy package files
+# Dependencies
+FROM base AS dependencies
+
 COPY package*.json ./
+RUN npm install
 
-# Install dependencies
-RUN bun install --frozen-lockfile
+# Build
+FROM base AS build
 
-# Copy source code
+COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
-# Build the application
-RUN bun run build
+# Public build-time environment variables
+# ARG NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+# ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
-# Production stage
-FROM oven/bun:1 AS runner
+RUN npm run build
 
-WORKDIR /app
+# Run
+FROM base AS run
 
-# Set environment to production
-ENV NODE_ENV production
+ENV NODE_ENV=production
+ENV PORT=$PORT
 
-# Copy necessary files from builder
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
 
-# Expose the port the app runs on
-EXPOSE 3000
+COPY --from=build /app/public ./public
+COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Start the application
-CMD ["bun", "server.js"]
+USER nextjs
+
+EXPOSE $PORT
+
+ENV HOSTNAME="0.0.0.0"
+CMD ["node", "server.js"]
