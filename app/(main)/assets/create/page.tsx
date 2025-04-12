@@ -9,6 +9,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
 import { FileUpload } from 'primereact/fileupload';
 import { Asset } from '@/types/fabric';
+import { createAsset } from '@/services/fabric/asset';
 
 interface DropdownItem {
     name: string;
@@ -62,15 +63,7 @@ const FormCreateAsset = () => {
             //     }
             // });
 
-            // const response = await fetch('/api/fabric/assets', {
-            //     method: 'POST',
-            //     body: JSON.stringify(formData)
-            // });
-            const response = await axios.post('/api/fabric/assets', formData);
-            if (response.status !== 201) {
-                throw new Error('Failed to create asset');
-            }
-
+            const response = await createAsset(formData);
             // Reset form after successful submission
             setFormData({
                 id: '',
@@ -103,7 +96,7 @@ const FormCreateAsset = () => {
                     <h5>Create new asset</h5>
                     <div className="field">
                         <label htmlFor="destinationOrg" className="col-12 mb-2 md:col-2 md:mb-0">Destination Organization</label>
-                        <div className="col-12 md:col-10">
+                        <div className="col-12 mb-2 md:col-10 md:mb-0">
                             <Dropdown
                                 id="destinationOrg"
                                 value={formData.destinationOrg}

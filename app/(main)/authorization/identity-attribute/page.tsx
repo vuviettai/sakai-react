@@ -5,8 +5,8 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown';
-import axios from 'axios';
-import { ObjectAttribute } from '@/types/fabric';
+import { IdentityAttribute } from '@/types/fabric';
+import { addIdentityAttributes } from '@/services/fabric/authorization';
 interface DropdownItem {
     name: string;
     code: string;
@@ -26,7 +26,7 @@ const FormIdentityAttribute = () => {
         setDropdownItem(dropdownItems[0]);
     }, [dropdownItems]);
     // Add form state
-    const [formData, setFormData] = useState<ObjectAttribute>({ namespace: '', objectName: '', action: '', attributes: [] });
+    const [formData, setFormData] = useState<IdentityAttribute>({ id: '', attributes: [] });
     // Add handlers for attributes
     const addAttribute = () => {
         setFormData(prev => ({
@@ -51,7 +51,7 @@ const FormIdentityAttribute = () => {
         }));
     };
     const handleSubmit = async () => {
-        const response = await axios.post('/api/fabric/authorization/object-attribute', formData);
+        const response = await addIdentityAttributes(formData);
         if (response.status !== 201) {
             throw new Error('Failed to create asset');
         }
@@ -63,25 +63,9 @@ const FormIdentityAttribute = () => {
                 <div className="card p-fluid">
                     <h5>Create identity attributes</h5>
                     <div className="field grid">
-                        <label htmlFor="namespace" className="col-12 mb-2 md:col-3 md:mb-0">Namespace</label>
+                        <label htmlFor="id" className="col-12 mb-2 md:col-3 md:mb-0">Identity</label>
                         <div className="col-12 md:col-9">
-                            <InputText id="namespace" type="text" value={formData.namespace} onChange={(e) => setFormData(prev => ({ ...prev, namespace: e.target.value }))} />
-                        </div>
-                    </div>
-                    <div className="field grid">
-                        <label htmlFor="objectName" className="col-12 mb-2 md:col-3 md:mb-0">
-                            Object name
-                        </label>
-                        <div className="col-12 md:col-9">
-                            <InputText id="objectName" type="text" value={formData.objectName} onChange={(e) => setFormData(prev => ({ ...prev, objectName: e.target.value }))} />
-                        </div>
-                    </div>
-                    <div className="field grid">
-                        <label htmlFor="action" className="col-12 mb-2 md:col-3 md:mb-0">
-                            Action
-                        </label>
-                        <div className="col-12 md:col-9">
-                            <InputText id="action" type="text" value={formData.action} onChange={(e) => setFormData(prev => ({ ...prev, action: e.target.value }))} />
+                            <InputText id="namespace" type="text" value={formData.id} onChange={(e) => setFormData(prev => ({ ...prev, id: e.target.value }))} />
                         </div>
                     </div>
                     <div className="field">

@@ -1,5 +1,8 @@
 import { Contract } from '@hyperledger/fabric-gateway';
 import * as grpc from '@grpc/grpc-js';
+export type Environment = {
+    API_URL: string;
+}
 export type FabricConfig = {
     org: string;
     username: string;

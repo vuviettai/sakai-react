@@ -7,6 +7,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown';
 import axios from 'axios';
 import { PubKey } from '@/types/fabric';
+import { importPubKey } from '@/services/fabric/encryption';
 interface DropdownItem {
     name: string;
     code: string;
@@ -28,9 +29,13 @@ const FormImportPubKey = () => {
     // Add form state
     const [formData, setFormData] = useState<PubKey>({ org: '', pubkey: '' });
     const handleSubmit = async () => {
-        const response = await axios.post('/api/fabric/encryption', formData);
-        if (response.status !== 201) {
-            throw new Error('Failed to create asset');
+        try {
+            const response = await importPubKey(formData);
+            if (response.status !== 201) {
+                throw new Error('Failed to create asset');
+            }
+        } catch (error) {
+            console.error(error);
         }
     }
 

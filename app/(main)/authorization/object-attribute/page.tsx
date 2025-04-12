@@ -5,8 +5,8 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown';
-import axios from 'axios';
 import { ObjectAttribute } from '@/types/fabric';
+import { addObjectAttributes } from '@/services/fabric/authorization';
 interface DropdownItem {
     name: string;
     code: string;
@@ -50,7 +50,7 @@ const FormObjectAttribute = () => {
         }));
     };
     const handleSubmit = async () => {
-        const response = await axios.post('/api/fabric/authorization/object-attribute', formData);
+        const response = await addObjectAttributes(formData);
         if (response.status !== 201) {
             throw new Error('Failed to create asset');
         }
