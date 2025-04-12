@@ -17,7 +17,7 @@ import React, { useEffect, useState } from 'react';
 import type { Demo } from '@/types';
 import { Asset } from '@/types/fabric';
 
-const TableDemo = () => {
+const ListAsset = () => {
     const [assets, setAssets] = useState<Asset[]>([]);
     const [filters1, setFilters1] = useState<DataTableFilterMeta>({});
     const [loading1, setLoading1] = useState(true);
@@ -133,14 +133,14 @@ const TableDemo = () => {
         setGlobalFilterValue1('');
     };
 
-    const countryBodyTemplate = (rowData: Demo.Customer) => {
-        return (
-            <React.Fragment>
-                <img alt="flag" src={`/demo/images/flag/flag_placeholder.png`} className={`flag flag-${rowData.country.code}`} width={30} />
-                <span style={{ marginLeft: '.5em', verticalAlign: 'middle' }}>{rowData.country.name}</span>
-            </React.Fragment>
-        );
-    };
+    // const countryBodyTemplate = (rowData: Demo.Customer) => {
+    //     return (
+    //         <React.Fragment>
+    //             <img alt="flag" src={`/demo/images/flag/flag_placeholder.png`} className={`flag flag-${rowData.country.code}`} width={30} />
+    //             <span style={{ marginLeft: '.5em', verticalAlign: 'middle' }}>{rowData.country.name}</span>
+    //         </React.Fragment>
+    //     );
+    // };
 
     const filterClearTemplate = (options: ColumnFilterClearTemplateOptions) => {
         return <Button type="button" icon="pi pi-times" onClick={options.filterClearCallback} severity="secondary"></Button>;
@@ -256,15 +256,20 @@ const TableDemo = () => {
                         className="p-datatable-gridlines"
                         showGridlines
                         rows={10}
-                        dataKey="id"
+                        dataKey="ID"
                         filters={filters1}
                         filterDisplay="menu"
                         loading={loading1}
                         responsiveLayout="scroll"
-                        emptyMessage="No customers found."
+                        emptyMessage="No assets found."
                         header={header1}
                     >
-                        <Column field="name" header="Name" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+                        <Column field="name" header="Name" filter filterPlaceholder="Search by name" style={{ minWidth: '10rem' }} />
+                        <Column field="title" header="Title" filter filterPlaceholder="Search by title" style={{ minWidth: '10rem' }} />
+                        <Column field="size" header="Size" filter filterPlaceholder="Search by size" style={{ minWidth: '3rem' }} />
+                        <Column field="description" header="Description" filter filterPlaceholder="Search by description" style={{ minWidth: '15rem' }} />
+                        <Column header="Download" style={{ minWidth: '8rem' }} />
+                        {/* 
                         <Column header="Country" filterField="country.name" style={{ minWidth: '12rem' }} body={countryBodyTemplate} filter filterPlaceholder="Search by country" filterClear={filterClearTemplate} filterApply={filterApplyTemplate} />
                         <Column
                             header="Agent"
@@ -281,6 +286,7 @@ const TableDemo = () => {
                         <Column field="status" header="Status" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
                         <Column field="activity" header="Activity" showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={activityBodyTemplate} filter filterElement={activityFilterTemplate} />
                         <Column field="verified" header="Verified" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '8rem' }} body={verifiedBodyTemplate} filter filterElement={verifiedFilterTemplate} />
+                        */}
                     </DataTable>
                 </div>
             </div>
@@ -288,4 +294,4 @@ const TableDemo = () => {
     );
 };
 
-export default TableDemo;
+export default ListAsset;

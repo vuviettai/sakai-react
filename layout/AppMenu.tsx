@@ -181,7 +181,22 @@ const AppMenu = () => {
                 {
                     label: 'Import pubkey',
                     icon: 'pi pi-fw pi-key',
-                    to: '/encryption/pubkey-import'
+                    to: '/encryption/pubkey/import'
+                },
+                {
+                    label: 'Pubkey list',
+                    icon: 'pi pi-fw pi-key',
+                    to: '/encryption/pubkey/list'
+                },
+                {
+                    label: 'Metadata create',
+                    icon: 'pi pi-fw pi-ticket',
+                    to: '/encryption/metadata/create'
+                },
+                {
+                    label: 'Metadata list',
+                    icon: 'pi pi-fw pi-list',
+                    to: '/encryption/metadata/list'
                 }
             ]
         },
@@ -192,12 +207,22 @@ const AppMenu = () => {
                 {
                     label: 'Create object attribute',
                     icon: 'pi pi-fw pi-list',
-                    to: '/authorization/object-attribute'
+                    to: '/authorization/object-attribute/create'
+                },
+                {
+                    label: 'List object attribute',
+                    icon: 'pi pi-fw pi-list',
+                    to: '/authorization/object-attribute/list'
                 },
                 {
                     label: 'Create identity attribute',
                     icon: 'pi pi-fw pi-list',
-                    to: '/authorization/identity-attribute'
+                    to: '/authorization/identity-attribute/create'
+                },
+                {
+                    label: 'List identity attribute',
+                    icon: 'pi pi-fw pi-list',
+                    to: '/authorization/identity-attribute/list'
                 }
             ]
         },

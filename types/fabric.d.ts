@@ -27,18 +27,27 @@ export interface Attribute {
     value: string;
 }
 export interface ObjectAttribute {
+    key: string?;
     namespace: string;
     objectName: string;
     action: string;
     attributes: Attribute[];
 }
-export interface IdentityAttribute {
+export interface SubjectAttribute {
     id: string;
     attributes: Attribute[];
 }
 export interface PubKey {
     org: string;
     pubkey: string;
+}
+
+export interface EncryptionMetadata {
+    key: string;
+    namespace: string;
+    objectName: string;
+    joinedFields: string[];
+    separatedFields: string[];
 }
 export interface Asset {
     id: string;

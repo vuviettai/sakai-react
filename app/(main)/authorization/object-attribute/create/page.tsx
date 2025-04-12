@@ -1,23 +1,26 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useRouter } from 'next/navigation'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown';
-import { IdentityAttribute } from '@/types/fabric';
-import { addIdentityAttributes } from '@/services/fabric/authorization';
+import { ObjectAttribute } from '@/types/fabric';
+import { addObjectAttributes } from '@/services/fabric/authorization';
+import { Toast } from 'primereact/toast';
 interface DropdownItem {
     name: string;
     code: string;
 }
 
-const FormIdentityAttribute = () => {
+const FormObjectAttribute = () => {
+    const router = useRouter()
+    const toast = useRef<Toast>(null);
     const [dropdownItem, setDropdownItem] = useState<DropdownItem | null>(null);
     const dropdownItems: DropdownItem[] = useMemo(
         () => [
-            { name: 'Org 1', code: 'Org1' },
-            { name: 'Org 2', code: 'Org2' },
+            { name: 'Demo', code: 'demo' },
         ],
         []
     );
@@ -26,7 +29,7 @@ const FormIdentityAttribute = () => {
         setDropdownItem(dropdownItems[0]);
     }, [dropdownItems]);
     // Add form state
-    const [formData, setFormData] = useState<IdentityAttribute>({ id: '', attributes: [] });
+    const [formData, setFormData] = useState<ObjectAttribute>({ key: '', namespace: 'demo', objectName: '', action: '', attributes: [] });
     // Add handlers for attributes
     const addAttribute = () => {
         setFormData(prev => ({
@@ -51,21 +54,48 @@ const FormIdentityAttribute = () => {
         }));
     };
     const handleSubmit = async () => {
-        const response = await addIdentityAttributes(formData);
-        if (response.status !== 201) {
-            throw new Error('Failed to create asset');
+        const response = await addObjectAttributes(formData);
+        if (response.status !== 200) {
+            throw new Error('Failed to create object attributes');
         }
+        toast.current?.show({
+            severity: 'success', summary: 'Success',
+            detail: `Object attribute created successfully in transaction ${response.data}`
+        });
+        router.push('/authorization/object-attribute/list');
     }
 
     return (
         <div className="grid">
+            <Toast ref={toast} />
             <div className="col-12 md:col-6">
                 <div className="card p-fluid">
-                    <h5>Create identity attributes</h5>
+                    <h5>Create object attributes</h5>
                     <div className="field grid">
-                        <label htmlFor="id" className="col-12 mb-2 md:col-3 md:mb-0">Identity</label>
+                        <label htmlFor="namespace" className="col-12 mb-2 md:col-3 md:mb-0">Namespace</label>
                         <div className="col-12 md:col-9">
-                            <InputText id="namespace" type="text" value={formData.id} onChange={(e) => setFormData(prev => ({ ...prev, id: e.target.value }))} />
+                            <Dropdown id="namespace"
+                                value={formData.namespace}
+                                options={dropdownItems}
+                                optionLabel="name"
+                                optionValue="code"
+                                onChange={(e) => setFormData(prev => ({ ...prev, namespace: e.value }))} />
+                        </div>
+                    </div>
+                    <div className="field grid">
+                        <label htmlFor="objectName" className="col-12 mb-2 md:col-3 md:mb-0">
+                            Object name
+                        </label>
+                        <div className="col-12 md:col-9">
+                            <InputText id="objectName" type="text" value={formData.objectName} onChange={(e) => setFormData(prev => ({ ...prev, objectName: e.target.value }))} />
+                        </div>
+                    </div>
+                    <div className="field grid">
+                        <label htmlFor="action" className="col-12 mb-2 md:col-3 md:mb-0">
+                            Action
+                        </label>
+                        <div className="col-12 md:col-9">
+                            <InputText id="action" type="text" value={formData.action} onChange={(e) => setFormData(prev => ({ ...prev, action: e.target.value }))} />
                         </div>
                     </div>
                     <div className="field">
@@ -112,4 +142,4 @@ const FormIdentityAttribute = () => {
     );
 };
 
-export default FormIdentityAttribute;
+export default FormObjectAttribute;

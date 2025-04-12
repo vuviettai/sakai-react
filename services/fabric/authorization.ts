@@ -1,10 +1,10 @@
-import { IdentityAttribute, ObjectAttribute } from "@/types/fabric";
+import { SubjectAttribute, ObjectAttribute } from "@/types/fabric";
 import axios from "axios";
 import { env } from "./common";
 
 export const addObjectAttributes = async (objectAttribute: ObjectAttribute) => {
     const response = await axios.post(`${env.API_URL}/authorization/add-object-attributes`, objectAttribute);
-    return response.data;
+    return response;
 }
 
 export const getObjectAttributes = async (objectAttribute: ObjectAttribute) => {
@@ -19,6 +19,11 @@ export const getObjectAttributes = async (objectAttribute: ObjectAttribute) => {
         params.set('action', objectAttribute.action);
     }
     const response = await axios.get(`${env.API_URL}/authorization/get-object-attributes?${params.toString()}`);
+    return response.data;
+}
+
+export const getAllObjectAttributes = async () => {
+    const response = await axios.get(`${env.API_URL}/authorization/get-object-attributes`);
     return response.data;
 }
 
@@ -39,25 +44,29 @@ export const deleteObjectAttributes = async (objectAttribute: ObjectAttribute) =
 
 export const updateObjectAttributes = async (objectAttribute: ObjectAttribute) => {
     const response = await axios.put(`${env.API_URL}/authorization/update-object-attributes`, objectAttribute);
-    return response.data;
+    return response;
 }
 
 
-export const addIdentityAttributes = async (identityAttribute: IdentityAttribute) => {
-    const response = await axios.post(`${env.API_URL}/authorization/add-identity-attributes`, identityAttribute);
-    return response.data;
+export const addSubjectAttributes = async (subjectAttribute: SubjectAttribute) => {
+    const response = await axios.post(`${env.API_URL}/authorization/add-subject-attributes`, subjectAttribute);
+    return response;
 }
 
 
 export const getIdentityAttributes = async (identity: string) => {
     const params = new URLSearchParams();
     params.set('id', identity);
-    const response = await axios.get(`${env.API_URL}/authorization/get-identity-attributes?${params.toString()}`);
+    const response = await axios.get(`${env.API_URL}/authorization/get-subject-attributes?${params.toString()}`);
+    return response.data;
+}
+export const getAllIdentityAttributes = async () => {
+    const response = await axios.get(`${env.API_URL}/authorization/get-subject-attributes`);
     return response.data;
 }
 
-export const updateIdentityAttributes = async (identityAttribute: IdentityAttribute) => {
-    const response = await axios.put(`${env.API_URL}/authorization/update-identity-attributes`, identityAttribute);
+export const updateSubjectAttributes = async (subjectAttribute: SubjectAttribute) => {
+    const response = await axios.put(`${env.API_URL}/authorization/update-subject-attributes`, subjectAttribute);
     return response.data;
 }
 
