@@ -3,7 +3,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEventListener, useMountEffect, useUnmountEffect } from 'primereact/hooks';
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, Suspense } from 'react';
 import { classNames } from 'primereact/utils';
 import AppFooter from './AppFooter';
 import AppSidebar from './AppSidebar';
@@ -14,7 +14,7 @@ import { PrimeReactContext } from 'primereact/api';
 import { ChildContainerProps, LayoutState, AppTopbarRef } from '@/types';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-const Layout = ({ children }: ChildContainerProps) => {
+const LayoutContent = ({ children }: ChildContainerProps) => {
     const { layoutConfig, layoutState, setLayoutState } = useContext(LayoutContext);
     const { setRipple } = useContext(PrimeReactContext);
     const topbarRef = useRef<AppTopbarRef>(null);
@@ -140,4 +140,14 @@ const Layout = ({ children }: ChildContainerProps) => {
     );
 };
 
-export default Layout;
+export default LayoutContent;
+
+const Layout = ({ children }: ChildContainerProps) => {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <LayoutContent>{children}</LayoutContent>
+        </Suspense>
+    );
+};
+
+export { Layout };
